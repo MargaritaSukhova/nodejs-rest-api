@@ -17,10 +17,12 @@ const contactSchema = Joi.object({
 	phone: Joi.string()
 		.regex(/^\(\d{3}\) \d{3}-\d{4}$/)
 		.messages({
-			"string.pattern.base": `Phone number must have (XXX) XXX-XXXX format`,
+			"string.pattern.base": "Phone number must have (XXX) XXX-XXXX format",
 			"any.required": "missing required phone field",
 		})
 		.required(),
 });
+
+
 
 module.exports = contactSchema;

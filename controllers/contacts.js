@@ -1,19 +1,9 @@
-
-
-const {
-	listContacts,
-	getContactById,
-	removeContact,
-	addContact,
-	updateContact,
-} = require("../models/contacts");
+const Contact = require("../models/contactModel");
 
 const { HttpError, cntlrWrapper } = require("../helpers");
 
-
-
 const getListContacts = async (req, res) => {
-	const contacts = await listContacts();
+	const contacts = await Contact.find();
 	res.json(contacts);
 };
 
@@ -27,7 +17,7 @@ const contactById = async (req, res) => {
 };
 
 const postContact = async (req, res) => {
-	const result = await addContact(req.body);
+	const result = await Contact.create(req.body);
 	res.status(201).json(result);
 };
 

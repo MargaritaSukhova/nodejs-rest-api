@@ -8,6 +8,7 @@ const {
 	postContact,
 	deleteContact,
 	updateContact,
+	updateStatusContact,
 } = require("../../controllers/contacts");
 
 const {
@@ -16,7 +17,10 @@ const {
 	isValidId,
 } = require("../../middlewares");
 
-const contactSchema = require("../../schemas/contacts");
+const {
+	contactSchema,
+	contactUpdateFavoriteSchema,
+} = require("../../schemas/contacts");
 
 router.get("/", getListContacts);
 
@@ -24,7 +28,6 @@ router.get("/:contactId", isValidId, contactById);
 
 router.post(
 	"/",
-	validateBodyNotEmpty(),
 	validateBody(contactSchema),
 	postContact
 );
@@ -34,11 +37,16 @@ router.delete("/:contactId", isValidId, deleteContact);
 router.put(
 	"/:contactId",
 	isValidId,
-	// validateBodyNotEmpty(),
-	// validateBody(contactSchema),
+	validateBody(contactSchema),
 	updateContact
 );
 
-router.patch("/:contactId/favorite", isValidId);
+router.patch(
+	"/:contactId/favorite",
+	isValidId,
+	validateBodyNotEmpty(),
+	validateBody(contactUpdateFavoriteSchema),
+	updateStatusContact
+);
 
 module.exports = router;

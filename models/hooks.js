@@ -3,4 +3,8 @@ const handleSaveError = (error, data, next) => {
 	next();
 };
 
-module.exports = { handleSaveError };
+const hadleValidateWhenUpdating = function(next) {
+	this.options.runValidators = true;
+	next();
+}
+module.exports = { handleSaveError, hadleValidateWhenUpdating };

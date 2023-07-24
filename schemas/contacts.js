@@ -17,10 +17,15 @@ const contactSchema = Joi.object({
 	phone: Joi.string()
 		.regex(/^\(\d{3}\) \d{3}-\d{4}$/)
 		.messages({
-			"string.pattern.base": `Phone number must have (XXX) XXX-XXXX format`,
+			"string.pattern.base": "Phone number must have (XXX) XXX-XXXX format",
 			"any.required": "missing required phone field",
 		})
 		.required(),
+	favorite: Joi.boolean(),
 });
 
-module.exports = contactSchema;
+const contactUpdateFavoriteSchema = Joi.object({
+	favorite: Joi.boolean().required()
+});
+	
+module.exports = { contactSchema, contactUpdateFavoriteSchema };

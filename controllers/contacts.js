@@ -1,25 +1,15 @@
-
-
-const {
-	listContacts,
-	getContactById,
-	removeContact,
-	addContact,
-	updateContact,
-} = require("../models/contacts");
+const Contact = require("../models/contactModel");
 
 const { HttpError, cntlrWrapper } = require("../helpers");
 
-
-
 const getListContacts = async (req, res) => {
-	const contacts = await listContacts();
+	const contacts = await Contact.find();
 	res.json(contacts);
 };
 
 const contactById = async (req, res) => {
 	const { contactId } = req.params;
-	const contact = await getContactById(contactId);
+	const contact = await Contact.findById(contactId);
 	if (!contact) {
 		throw HttpError(404, "Not found");
 	}
@@ -27,33 +17,47 @@ const contactById = async (req, res) => {
 };
 
 const postContact = async (req, res) => {
-	const result = await addContact(req.body);
+	const result = await Contact.create(req.body);
 	res.status(201).json(result);
 };
 
 const deleteContact = async (req, res) => {
 	const { contactId } = req.params;
-	const result = await removeContact(contactId);
+	const result = await Contact.findByIdAndDelete(contactId);
 	if (!result) {
 		throw HttpError(404, "Not found");
 	}
 	res.json({ message: "contact deleted" });
 };
 
-const putContact = async (req, res) => {
-
+const updateContact = async (req, res) => {
 	const { contactId } = req.params;
-	const result = await updateContact(contactId, req.body);
+	const result = await Contact.findByIdAndUpdate(contactId, req.body, {
+		new: true
+	});
 	if (!result) {
 		throw HttpError(404, "Not found");
 	}
 	res.json(result);
 };
 
+const updateStatusContact = async (req, res) => {
+	const { contactId } = req.params;
+	const result = await Contact.findByIdAndUpdate(contactId, req.body, {
+		new: true,
+	});
+	if (!result) {
+		throw HttpError(404, "Not found");
+	}
+	res.json(result);
+	
+}
+
 module.exports = {
 	getListContacts: cntlrWrapper(getListContacts),
 	contactById: cntlrWrapper(contactById),
 	postContact: cntlrWrapper(postContact),
 	deleteContact: cntlrWrapper(deleteContact),
-	putContact: cntlrWrapper(putContact),
+	updateContact: cntlrWrapper(updateContact),
+	updateStatusContact: cntlrWrapper(updateStatusContact),
 };

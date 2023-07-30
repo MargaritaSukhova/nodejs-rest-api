@@ -1,6 +1,6 @@
 const express = require("express");
 
-const router = express.Router();
+const contactsRouter = express.Router();
 
 const {
 	getListContacts,
@@ -9,7 +9,7 @@ const {
 	deleteContact,
 	updateContact,
 	updateStatusContact,
-} = require("../../controllers/contacts");
+} = require("../../controllers/contacts-controller");
 
 const {
 	validateBody,
@@ -22,26 +22,22 @@ const {
 	contactUpdateFavoriteSchema,
 } = require("../../schemas/contacts");
 
-router.get("/", getListContacts);
+contactsRouter.get("/", getListContacts);
 
-router.get("/:contactId", isValidId, contactById);
+contactsRouter.get("/:contactId", isValidId, contactById);
 
-router.post(
-	"/",
-	validateBody(contactSchema),
-	postContact
-);
+contactsRouter.post("/", validateBody(contactSchema), postContact);
 
-router.delete("/:contactId", isValidId, deleteContact);
+contactsRouter.delete("/:contactId", isValidId, deleteContact);
 
-router.put(
+contactsRouter.put(
 	"/:contactId",
 	isValidId,
 	validateBody(contactSchema),
 	updateContact
 );
 
-router.patch(
+contactsRouter.patch(
 	"/:contactId/favorite",
 	isValidId,
 	validateBodyNotEmpty(),
@@ -49,4 +45,4 @@ router.patch(
 	updateStatusContact
 );
 
-module.exports = router;
+module.exports = contactsRouter;

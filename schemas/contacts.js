@@ -1,5 +1,7 @@
 const Joi = require("joi");
 
+const phoneRegex = require("../constants/contacts-constants");
+
 const contactSchema = Joi.object({
 	name: Joi.string()
 		.min(3)
@@ -15,7 +17,7 @@ const contactSchema = Joi.object({
 		})
 		.required(),
 	phone: Joi.string()
-		.regex(/^\(\d{3}\) \d{3}-\d{4}$/)
+		.regex(phoneRegex)
 		.messages({
 			"string.pattern.base": "Phone number must have (XXX) XXX-XXXX format",
 			"any.required": "missing required phone field",

@@ -15,12 +15,15 @@ const {
 	validateBody,
 	validateBodyNotEmpty,
 	isValidId,
+	authenticate,
 } = require("../../middlewares");
 
 const {
 	contactSchema,
 	contactUpdateFavoriteSchema,
 } = require("../../schemas/contacts");
+
+contactsRouter.use(authenticate);
 
 contactsRouter.get("/", getListContacts);
 

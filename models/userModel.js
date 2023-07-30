@@ -5,7 +5,7 @@ const {
 	hadleValidateWhenUpdating,
 } = require("../models/hooks");
 
-const emailRegex = require('../constants/user-constants')
+const { emailRegex, subscriptionList } = require("../constants/user-constants");
 
 const userSignUpSchema = Schema(
 	{
@@ -22,8 +22,12 @@ const userSignUpSchema = Schema(
 		},
 		subscription: {
 			type: String,
-			enum: ["starter", "pro", "business"],
+			enum: subscriptionList,
 			default: "starter",
+		},
+		token: {
+			type: String,
+			default: null,
 		},
 	},
 	{ versionKey: false }

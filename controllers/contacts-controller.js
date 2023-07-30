@@ -3,9 +3,13 @@ const Contact = require("../models/contactModel");
 const { HttpError, cntlrWrapper } = require("../helpers");
 
 const getListContacts = async (req, res) => {
-	const contacts = await Contact.find();
+	const { _id: owner } = req.user;
+	const { page, limit, ...favorite } = req.query;
+	const skip = (page - 1) * limit;
+	const contacts = await Contact.find(	{ owner, ...favorite }, {},	{ skip, limit });
 	res.json(contacts);
 };
+
 
 const contactById = async (req, res) => {
 	const { contactId } = req.params;
@@ -17,7 +21,8 @@ const contactById = async (req, res) => {
 };
 
 const postContact = async (req, res) => {
-	const result = await Contact.create(req.body);
+	const { _id: owner } = req.user;
+	const result = await Contact.create({...req.body, owner});
 	res.status(201).json(result);
 };
 

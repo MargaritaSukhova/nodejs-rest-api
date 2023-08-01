@@ -44,7 +44,7 @@ const login = async (req, res) => {
 
   await User.findByIdAndUpdate(user._id, { token })
   
-	res.status(201).json({token, 
+	res.json({token, 
 		user: { email: user.email, subscription: user.subscription },
 	});
 };
@@ -60,7 +60,7 @@ const logout = async (req, res) => {
 
   await User.findByIdAndUpdate(_id, { token: "" })
   
-  res.status(204);
+  res.status(204).json();
 }
 
 const updateSubscription = async (req, res) => {

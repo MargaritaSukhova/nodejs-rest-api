@@ -7,7 +7,12 @@ const getListContacts = async (req, res) => {
 	const { page, limit, ...favorite } = req.query;
 	const skip = (page - 1) * limit;
 	const contacts = await Contact.find(	{ owner, ...favorite }, {},	{ skip, limit });
-	res.json(contacts);
+	res.json({
+		contacts,
+		total: contacts.length,
+		pages: contacts.length / limit,
+		per_page: limit
+	});
 };
 
 

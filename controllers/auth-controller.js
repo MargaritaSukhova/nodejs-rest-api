@@ -20,7 +20,7 @@ const { HttpError, cntlrWrapper } = require("../helpers");
 
 const register = async (req, res) => {
 	const { email, password } = req.body;
-	const avatarURL = gravatar.url(email, { s: 200 });
+	const avatarURL = gravatar.url(email, { s: 250 });
 	const user = await User.findOne({ email });
 	if (user) {
 		throw HttpError(409, "Email in use");
@@ -39,6 +39,7 @@ const register = async (req, res) => {
 };
 
 const login = async (req, res) => {
+ 
 	const { email, password } = req.body;
 
 	const user = await User.findOne({ email });
@@ -112,11 +113,13 @@ const updateAvatar = async (req, res) => {
 	res.json({ avatarURL });
 };
 
+
 module.exports = {
 	register: cntlrWrapper(register),
 	login: cntlrWrapper(login),
 	getCurrent: cntlrWrapper(getCurrent),
 	logout: cntlrWrapper(logout),
 	updateSubscription: cntlrWrapper(updateSubscription),
-	updateAvatar: cntlrWrapper(updateAvatar),
+  updateAvatar: cntlrWrapper(updateAvatar),
+  logintest: login
 };

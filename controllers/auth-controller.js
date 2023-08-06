@@ -16,7 +16,7 @@ require("dotenv").config();
 
 const { JWT_SECRET } = process.env;
 
-const { HttpError, cntlrWrapper } = require("../helpers");
+const { HttpError, cntlrWrapper, comparePassword } = require("../helpers");
 
 const register = async (req, res) => {
 	const { email, password } = req.body;
@@ -48,7 +48,7 @@ const login = async (req, res) => {
 		throw HttpError(401, "Email or password is wrong");
 	}
 
-	const passwordCompare = await bcrypt.compare(password, user.password);
+	const passwordCompare = comparePassword(password, user.password);
 
 	if (!passwordCompare) {
 		throw HttpError(401, "Email or password is wrong");
@@ -62,7 +62,7 @@ const login = async (req, res) => {
 
 	await User.findByIdAndUpdate(user._id, { token });
 
-	res.json({
+  res.status(200).json({
 		token,
 		user: { email: user.email, subscription: user.subscription },
 	});
@@ -102,14 +102,15 @@ const avatarPath = path.resolve("public", "avatars");
 const updateAvatar = async (req, res) => {
 	const { _id } = req.user;
 	const { path: oldPath, filename } = req.file;
-	console.log(oldPath);
+	// console.log(oldPath);
   const avatar = await Jimp.read(oldPath);
   await avatar.resize(250, 250);
   await avatar.write(oldPath);
 	const newPath = path.join(avatarPath, filename);
 	await fs.rename(oldPath, newPath);
-	const avatarURL = path.join("avatars", filename);
-	await User.findByIdAndUpdate(_id, avatarURL, { new: true });
+  const avatarURL = path.join("avatars", filename);
+  console.log(avatarURL);
+	await User.findByIdAndUpdate(_id, {avatarURL}, { new: true });
 	res.json({ avatarURL });
 };
 

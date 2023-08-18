@@ -33,6 +33,14 @@ const userSingInSchema = Joi.object({
 		.required(),
 });
 
+const userEmailSchema = Joi.object({
+	email: Joi.string()
+		.regex(emailRegex)
+		.messages({
+			"any.required": "missing required email field",
+		})
+});
+
 const userUpdateSubscriptionSchema = Joi.object({
 	subscription: Joi.string()
 		.valid(...subscriptionList)
@@ -47,5 +55,6 @@ const userUpdateSubscriptionSchema = Joi.object({
 module.exports = {
 	userSingUpSchema,
 	userSingInSchema,
+	userEmailSchema,
 	userUpdateSubscriptionSchema,
 };

@@ -4,6 +4,8 @@ const authRouter = express.Router();
 
 const {
 	register,
+	verify,
+	resendVerifyEmail,
 	login,
 	getCurrent,
 	logout,
@@ -16,10 +18,15 @@ const { validateBody, authenticate, upload } = require("../../middlewares");
 const {
 	userSingUpSchema,
 	userSingInSchema,
+	userEmailSchema,
 	userUpdateSubscriptionSchema,
 } = require("../../schemas/users");
 
 authRouter.post("/register", validateBody(userSingUpSchema), register);
+
+authRouter.get("/verify/:verificationToken", verify);
+
+authRouter.post("/verify", validateBody(userEmailSchema), resendVerifyEmail);
 
 authRouter.post("/login", validateBody(userSingInSchema), login);
 
